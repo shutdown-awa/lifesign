@@ -1,0 +1,12 @@
+# ── Identity Configuration Template ─────────────────────
+# Copy this file to config/clients.yaml with your real keys, OR (preferred)
+# override via env: USER_STATUS_PHONE_KEY / USER_STATUS_AGENT_KEY.
+# Each is a *single shared secret* used for identity, not per-field authorization.
+#
+#   phone_key    — the iOS Shortcuts shortcut uses this to POST /ingest
+#   agent_key    — the MCP gateway / AI agent uses this to GET /query_all
+#
+# NOTE: config/clients.yaml is git-ignored — never commit real keys.
+
+phone_key: "<change-me>"
+agent_key: "<change-me>"

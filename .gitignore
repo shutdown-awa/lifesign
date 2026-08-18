@@ -1,0 +1,23 @@
+# ============ Python ============
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# ============ Runtime / local ============
+.run/
+*.log
+*.pid
+
+# ============ Secrets — never commit ============
+.env
+.env.*
+!.env.example
+config/clients.yaml
+
+# ============ OS / editor ============
+.DS_Store
+.idea/
+.vscode/

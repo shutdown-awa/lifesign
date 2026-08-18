@@ -1,0 +1,18 @@
+# Lifesign — docker compose for 1Panel / manual deploy
+# Single port: 8764 (/ingest + /query_all + /mcp all in one)
+# 镜像由 GitHub Actions 自动构建推送至 GHCR；部署时直接拉取。
+services:
+  lifesign:
+    image: ghcr.io/shutdown-awa/lifesign:latest
+    container_name: lifesign
+    restart: unless-stopped
+    ports:
+      # 唯一需要暴露的端口 — 手机上传 + Hermes MCP 读取共用
+      - "8764:8764"
+    environment:
+      # 生产部署请覆盖默认密钥！
+      - USER_STATUS_PHONE_KEY=${USER_STATUS_PHONE_KEY:-phone-secret-key-001}
+      - USER_STATUS_AGENT_KEY=${USER_STATUS_AGENT_KEY:-agent-read-secret-key-001}
+    labels:
+      - "1panel.description=Lifesign: 手机状态接收 + MCP for AI Agent"
+      - "com.centurylinklabs.watchtower.enable=true"
