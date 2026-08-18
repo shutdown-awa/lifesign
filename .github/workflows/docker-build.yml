@@ -2,7 +2,6 @@ name: Build & Push Docker Image
 
 on:
   push:
-    branches: [main]
     tags: ['v*']
   workflow_dispatch:
 
@@ -40,8 +39,9 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
             type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
             type=sha
 
       - name: Build and push
@@ -57,26 +57,10 @@ jobs:
         # GHCR 包可见性独立于仓库：仓库转 public 后包仍可能私有，
         # 匿名拉取会 401。CI 的 GITHUB_TOKEN 自带 write:packages，
         # 用它直接把包改为 public，方便 1Panel 主机免凭证拉取。
-        # 注意：对于仓库级包，必须用 repo-scoped 端点而不是 user/packages。
         run: |
-          echo "=== package visibility before ==="
-          curl -sS -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/${{ github.repository }}/packages/container/lifesign || echo "GET failed"
-          echo ""
-          echo "=== set visibility public ==="
           curl -sS -X PATCH \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/user/packages/container/lifesign \
-            -d '{"visibility":"public"}' || echo "user-scoped PATCH failed"
-          echo ""
-          echo "=== attempt repo-scoped PATCH ==="
-          curl -sS -X PATCH \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/${{ github.repository }}/packages/container/lifesign \
-            -d '{"visibility":"public"}' || echo "repo-scoped PATCH failed"
+            -d '{"visibility":"public"}'

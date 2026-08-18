@@ -1,9 +1,9 @@
 # Lifesign — docker compose for 1Panel / manual deploy
 # Single port: 8764 (/ingest + /query_all + /mcp all in one)
-# 镜像由 GitHub Actions 自动构建推送至 GHCR；部署时直接拉取。
+# 镜像由 GitHub Actions 在打 tag 时构建推送至 GHCR；部署时直接拉取。
 services:
   lifesign:
-    image: ghcr.io/shutdown-awa/lifesign:latest
+    image: ghcr.nju.edu.cn/shutdown-awa/lifesign:v1.0.0
     container_name: lifesign
     restart: unless-stopped
     ports:

@@ -120,11 +120,27 @@ mcp_servers:
 
 仓库内置 `.github/workflows/docker-build.yml`：
 
-- **触发**：push 到 `main` / 手动 `workflow_dispatch` / 打 tag
-- **产物**：`ghcr.io/<owner>/lifesign:latest` 与 `:<git-sha>` 双 tag
+- **触发**：**打 tag `v*`**（如 `v1.0.0`）/ 手动 `workflow_dispatch`——普通 push 到 `main` 不会构建镜像
+- **产物**：`ghcr.io/<owner>/lifesign:v1.0.0`、`:v1`、`:v1.0` 与 `:sha-<git-sha>` 多 tag
 - **平台**：`linux/amd64`、`linux/arm64`
-- **说明**：镜像为私有（仓库私有 → GHCR 包私有），1Panel 部署时需在
-  Docker 配置中添加 GHCR 登录凭据（`ghcr.io` 用户名 + PAT）。
+- **镜像源**：国内可用 `ghcr.nju.edu.cn/<owner>/lifesign:vX.Y.Z` 加速拉取
+- **说明**：包为 public，1Panel 主机免凭证匿名拉取。
+
+发布新版本：
+
+```bash
+git tag v1.0.0 && git push origin v1.0.0
+```
+
+## 📱 配套 iOS 快捷指令
+
+本仓库配套一个 iOS 快捷指令，用于手机端一键上报设备状态 + 健康数据到本服务：
+
+```
+https://www.icloud.com/shortcuts/4e534f96a25b4d148ac1cedd1ca79008
+```
+
+安装后在快捷指令内填写你的服务器地址与手机 key（与 `USER_STATUS_PHONE_KEY` 一致）即可使用。
 
 ## ✅ 测试
 
@@ -153,4 +169,6 @@ lifesign/
 
 ## 📜 许可证
 
-MIT
+[PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0)
+
+本软件**仅限非商业用途**。禁止将本软件或其衍生作品用于商业目的（包括但不限于：出售、出租、用于商业产品/服务、公司内部商业使用）。详情见 `LICENSE` 文件。
