@@ -52,3 +52,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
+
+      - name: Ensure package is public
+        # GHCR 包可见性独立于仓库：仓库转 public 后包仍可能私有，
+        # 匿名拉取会 401。CI 的 GITHUB_TOKEN 自带 write:packages，
+        # 用它直接把包改为 public，方便 1Panel 主机免凭证拉取。
+        run: |
+          curl -sS -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/user/packages/container/lifesign \
+            -d '{"visibility":"public"}'
