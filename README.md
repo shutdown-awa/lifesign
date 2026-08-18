@@ -110,9 +110,15 @@ mcp_servers:
   user-status:
     type: streamable-http
     url: http://127.0.0.1:8764/mcp   # 本机回环，不走公网
+    headers:
+      Authorization: "Bearer <你的 agent key>"   # 与 USER_STATUS_AGENT_KEY 一致
     connect_timeout: 10
     timeout: 30
 ```
+
+> ⚠️ MCP 端点 `/mcp` **带 Bearer 鉴权**（复用 `USER_STATUS_AGENT_KEY`）：
+> 无 token 的请求一律 401，防止本机其他服务 / 局域网客户端偷读数据。
+> 生产部署务必通过环境变量设置强 key（勿用仓库默认值）。
 
 验证：`hermes mcp test user-status`；重启 Hermes 后工具注册为 `mcp_user_status_*`。
 
