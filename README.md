@@ -143,7 +143,7 @@ git tag v1.0.0 && git push origin v1.0.0
 本仓库配套一个 iOS 快捷指令，用于手机端一键上报设备状态 + 健康数据到本服务：
 
 ```
-https://www.icloud.com/shortcuts/4e534f96a25b4d148ac1cedd1ca79008
+https://www.icloud.com/shortcuts/b2e620b611624e05b40f7b70a2fbf7fb
 ```
 
 安装后在快捷指令内填写你的服务器地址与手机 key（与 `USER_STATUS_PHONE_KEY` 一致）即可使用。
